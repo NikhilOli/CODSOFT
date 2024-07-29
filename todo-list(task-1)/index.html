@@ -1,13 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <title>To-do List</title>
 </head>
+
 <body>
-    <h1>Todo List</h1>
+    <div class="container">
+        <header>
+          <img src="img/logo.png" alt="Logo" class="logo">
+          <h1>Todo List</h1>
+        </header>
+        <main>
+          <form class="todo-form">
+            <input type="text" id="todo-input" placeholder="Add a new task..." />
+            <button type="submit" class="add-btn">+</button>
+          </form>
+          <ul class="todo-list" id="todo-list">
+            <!-- Todo items will be added here dynamically -->
+             <li>This is Todo 1</li>
+             <li>This is Todo 2</li>
+             <li>This is Todo 3</li>
+             <li>This is Todo 54</li>
+          </ul>
+        </main>
+        <footer>
+          <p>&copy; 2024 Todo App - Crafted with ❤️</p>
+        </footer>
+      </div>
 </body>
 <script src="script.js"></script>
+
 </html>
