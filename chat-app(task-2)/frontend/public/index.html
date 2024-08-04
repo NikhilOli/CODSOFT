@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div id="app">
+        <div id="auth-container">
+            <h2>Chat Application</h2>
+            <div id="register-form">
+                <h3>Register</h3>
+                <input type="text" id="reg-username" placeholder="Username">
+                <input type="email" id="reg-email" placeholder="Email">
+                <input type="password" id="reg-password" placeholder="Password">
+                <button onclick="register()">Register</button>
+            </div>
+            <div id="login-form">
+                <h3>Login</h3>
+                <input type="text" id="login-username" placeholder="Username">
+                <input type="password" id="login-password" placeholder="Password">
+                <button onclick="login()">Login</button>
+            </div>
+        </div>
+        <div id="chat-container" style="display: none;">
+            <div id="sidebar">
+                <h3>Users</h3>
+                <ul id="users-list"></ul>
+                <h3>Groups</h3>
+                <ul id="groups-list"></ul>
+                <input type="text" id="new-group" placeholder="New Group Name">
+                <button onclick="createGroup()">Create Group</button>
+            </div>
+            <div id="chat-area">
+                <div id="chat-header"></div>
+                <div id="messages"></div>
+                <div id="chat-input">
+                    <input type="text" id="message-input" placeholder="Type a message...">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/client.js"></script>
+</body>
+</html>

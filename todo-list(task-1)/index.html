@@ -6,27 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>To-do List</title>
 </head>
 
 <body>
     <div class="container">
         <header>
-            <h2>Logo</h2>
+            <i class="logo fa-solid fa-list"></i>
             <h1>Todo List</h1>
         </header>
         <main>
             <form class="todo-form">
                 <input type="text" id="todo-input" placeholder="Add a new task..." />
-                <button type="submit" id="add-btn">+Submit</button>
+                <button type="submit" id="add-btn">Submit</button>
             </form>
             <div class="todo-list" id="todo-list">
-                <!-- Todo items will be added here dynamically -->
                 
             </div>
         </main>
         <footer>
-            <p>&copy; 2024 Todo App - Crafted with ❤️</p>
+            <div class="footer-bottom">
+                <p>&#9733; Stay organized and productive</p>
+            </div>
         </footer>
     </div>
 </body>
