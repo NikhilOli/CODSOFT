@@ -10,9 +10,16 @@ import bcrypt from 'bcrypt'
 
 const app = express()
 const server = new http.createServer(app)
-const io = new Server(server)
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ['GET', 'POST'],
+  }
+  });
 
-app.use(cors());
+app.use(cors({  origin: "http://localhost:5173", credentials: true, methods: ['GET', 'POST'], }
+));
 app.use(express.json());
 
 
@@ -21,9 +28,9 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'index.html'));
+// });
 // app.get('/styles.css', (req, res) => {
 //     res.setHeader('Content-Type', 'text/css');
 //     res.sendFile(path.join(__dirname, 'public', 'styles.css'));
@@ -58,7 +65,7 @@ const authenticateToken = (req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1];
   if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, 'your_jwt_secret', (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
     next();
@@ -90,7 +97,7 @@ app.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Cannot find user' });
         }
         if (await bcrypt.compare(req.body.password, user.password)) {
-            const accessToken = jwt.sign({ username: user.username }, 'your_jwt_secret');
+            const accessToken = jwt.sign({ username: user.username }, process.env.JWT_SECRET);
             res.json({ accessToken: accessToken });
         } else {
             res.status(403).json({ message: 'Not Allowed' });
