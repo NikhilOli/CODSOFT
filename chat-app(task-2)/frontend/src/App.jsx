@@ -1,19 +1,29 @@
-// import { BrowserRouter } from "react-router-dom"
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Layout from './components/layout/Layout';
+import ChatWindow from './components/chat/ChatWindow';
+import ProfileCard from './components/profile/ProfileCard';
+import Home from './pages/Home';
 
-import { useEffect } from "react"
-import socket from "./api/socket"
-
-export default function App() {
-
-  // useEffect(() => {
-  //   socket.on("connect", () => {
-  //     console.log("Client connected to server");
-  // })
-  // }, [])
+function App() {
   return (
-    <h1 className="text-3xl text-green-400
-     font-bold underline">
-      Hello world!
-    </h1>
-  )
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/chat" element={<Layout />}>
+            <Route index element={<ChatWindow />} />
+            <Route path="profile" element={<ProfileCard />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
 }
+
+export default App;
