@@ -3,10 +3,24 @@ import { AuthContext } from '../../context/AuthContext';
 import api from '../../services/api';
 
 const ProfileCard = () => {
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser, loading } = useContext(AuthContext);
     const [editing, setEditing] = useState(false);
-    const [username, setUsername] = useState(user.username);
-    const [email, setEmail] = useState(user.email);
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+
+    if (!user) {
+        return (
+            <div className="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden mt-16">
+                <div className="p-6 text-center">
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        <p>No user data available</p>
+                    )}
+                </div>
+            </div>
+        );
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -49,7 +63,7 @@ const ProfileCard = () => {
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="username"
                             type="text"
-                            value={username}
+                            value={username || user.username}
                             onChange={(e) => setUsername(e.target.value)}
                         />
                     </div>
@@ -61,7 +75,7 @@ const ProfileCard = () => {
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                             id="email"
                             type="email"
-                            value={email}
+                            value={email || user.email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
