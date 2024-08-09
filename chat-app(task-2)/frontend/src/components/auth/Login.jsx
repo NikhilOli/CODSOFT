@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     const success = await login(username, password);
     if (success) {
-      navigate('/');
+      navigate('/chat');
     } else {
       alert('Login failed');
     }

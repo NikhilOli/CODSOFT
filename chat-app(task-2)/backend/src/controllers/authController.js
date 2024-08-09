@@ -10,6 +10,7 @@ export const register = async (req, res, next) => {
     await user.save();
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
+    console.log(error.message); 
     next(error);
   }
 };
@@ -25,8 +26,8 @@ export const login = async (req, res, next) => {
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.json({ token });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token, user: { _id: user._id, username: user.username, email: user.email } });
   } catch (error) {
     next(error);
   }

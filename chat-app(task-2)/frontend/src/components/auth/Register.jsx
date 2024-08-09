@@ -13,16 +13,20 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/auth/register', { username, email, password });
-      const success = await login(username, password);
-      if (success) {
-        navigate('/');
-      }
+        await api.post('/auth/register', { username, email, password });
+        const success = await login(username, password);
+        if (success) {
+            navigate('/login');
+        }
     } catch (error) {
-      console.error('Registration error:', error);
-      alert('Registration failed');
+        console.error('Registration error:', error);
+        if (error.response && error.response.data) {
+            alert(error.response.data.message || 'Registration failed');
+        } else {
+            alert('Network error. Please try again.');
+        }
     }
-  };
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

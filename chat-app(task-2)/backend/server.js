@@ -5,7 +5,7 @@ import { connectDB } from './src/config/database.js';
 import 'dotenv/config';
 
 const server = createServer(app);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 setupSocket(server);
 connectDB();

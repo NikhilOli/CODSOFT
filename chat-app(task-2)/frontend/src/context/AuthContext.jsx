@@ -19,12 +19,12 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUser = async () => {
         try {
-            if (user) {
-                const response = await api.get('/users/profile');
-                setUser(response.data);
-            }
+            const response = await api.get('/users/profile');
+            setUser(response.data);
         } catch (error) {
             console.error('Error fetching user:', error);
+            localStorage.removeItem('token');
+            delete api.defaults.headers.common['Authorization'];
         } finally {
             setLoading(false);
         }
@@ -35,10 +35,15 @@ export const AuthProvider = ({ children }) => {
             const response = await api.post('/auth/login', { username, password });
             localStorage.setItem('token', response.data.token);
             api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-            await fetchUser();
+            await fetchUser(); // Fetch user data after successful login
             return true;
         } catch (error) {
             console.error('Login error:', error);
+            if (error.response) {
+                alert(error.response.data.message || 'Login failed');
+            } else {
+                alert('Network error. Please try again.');
+            }
             return false;
         }
     };
@@ -50,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, logout, fetchUser }}>
             {children}
         </AuthContext.Provider>
     );
