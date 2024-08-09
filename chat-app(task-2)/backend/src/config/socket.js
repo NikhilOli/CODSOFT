@@ -1,6 +1,5 @@
 import { Server } from 'socket.io';
 import { handleSocketConnection } from '../services/socketService.js';
-import cors from 'cors'
 
 export const setupSocket = (server) => {
   const io = new Server(server, {
@@ -10,5 +9,5 @@ export const setupSocket = (server) => {
     },
   });
 
-  io.on('connection', handleSocketConnection);
+  io.on('connection', handleSocketConnection(io));
 };

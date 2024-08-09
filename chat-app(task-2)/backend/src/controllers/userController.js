@@ -1,5 +1,14 @@
 import User from '../models/User.js';
 
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find(); // Assuming `User` is your Mongoose model
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users' });
+  }
+};
+
 export const getProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.userId).select('-password');

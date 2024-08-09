@@ -1,11 +1,13 @@
 import express from 'express';
-import { getProfile, updateProfile } from '../controllers/userController.js';
+import { getAllUsers, getProfile, updateProfile } from '../controllers/userController.js';
 import { authenticateToken } from '../middleware/auth.js';
 
-const router = express.Router();
+const userRoutes = express.Router();
 
-router.use(authenticateToken);
-router.get('/profile', getProfile);
-router.put('/profile', updateProfile);
 
-export default router;
+userRoutes.use(authenticateToken);
+userRoutes.get('/', getAllUsers)
+userRoutes.get('/profile', getProfile);
+userRoutes.put('/profile', updateProfile);
+
+export default userRoutes;

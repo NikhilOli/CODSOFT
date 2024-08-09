@@ -14,7 +14,7 @@ const Sidebar = () => {
                 <ul>
                     <li>
                         <Link
-                            to="/"
+                            to="/chat"
                             className={`block py-2 px-4 hover:bg-indigo-800 ${isActive('/')}`}
                         >
                             Chat
@@ -22,7 +22,7 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <Link
-                            to="/profile"
+                            to="/chat/profile"
                             className={`block py-2 px-4 hover:bg-indigo-800 ${isActive('/profile')}`}
                         >
                             Profile

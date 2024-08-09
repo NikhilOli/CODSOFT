@@ -10,20 +10,46 @@ const ChatWindow = () => {
   const { user } = useContext(AuthContext);
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(null);   
+
 
   useEffect(() => {
     const newSocket = initializeSocket();
     setSocket(newSocket);
 
-    return () => newSocket.close();
+    newSocket.on('connect', () => {
+      console.log('Connected to socket server');
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
   }, []);
 
   useEffect(() => {
-    if (selectedChat) {
+    if (socket) {
+      const messageHandler = (message) => {
+        console.log('Received message:', message);
+        // Update state directly with the new message
+        setMessages((prevMessages) => [...prevMessages, message]);
+      };
+
+      socket.on('message', messageHandler);
+
+      return () => {
+        socket.off('message', messageHandler);   
+
+      };
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    if (selectedChat && socket) {
+      console.log('Joining room:', selectedChat._id);
+      socket.emit('join', { room: selectedChat._id });
       fetchMessages();
     }
-  }, [selectedChat]);
+  }, [selectedChat, socket]);
 
   const fetchMessages = async () => {
     try {
@@ -40,8 +66,15 @@ const ChatWindow = () => {
         recipient: selectedChat._id,
         content,
       });
-      setMessages([...messages, response.data]);
-      socket.emit('sendMessage', response.data);
+      console.log('Message sent:', response.data);
+      // Update state with the sent message and potentially emit to socket
+      setMessages((prevMessages) => [...prevMessages, response.data]);
+      if (socket) {
+        socket.emit('sendMessage', {
+          ...response.data,
+          room: selectedChat._id,
+        });
+      }
     } catch (error) {
       console.error('Error sending message:', error);
     }
