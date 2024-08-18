@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState, ReactNode, useContext } from "react";
 
 interface FilterContextType {
     searchQuery: string;
@@ -39,4 +39,12 @@ export const FilterContextProvider: React.FC<{children: ReactNode}> = ({
     }}>
         {children}
     </FilterContext.Provider>
+}
+
+export const useFilter = () => {
+    const context = useContext(FilterContext)
+    if (context === undefined) {
+        throw new Error("useFilter must be used within a FilterContextProvider")
+    }
+    return context
 }
