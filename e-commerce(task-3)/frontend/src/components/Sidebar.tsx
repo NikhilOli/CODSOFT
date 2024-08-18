@@ -51,8 +51,28 @@ const Sidebar = () => {
             </div>
             <div>
                 <h4 className="text-xl font-medium mb-4">Categories</h4>
-                
+                {
+                    categories.map((category, index) => (                      
+                            <label className="block mb-2">
+                                <input key={index} type="radio" value={category} className="mr-2 w-[16px] h-[16px]"/>
+                                {category.toUpperCase()}
+                            </label>
+                    ))
+                }
             </div>
+
+            {/* Keywords Section */}
+            <section>
+                <h1>
+                    Keywords
+                </h1>
+                {
+                    keywords.map((keyword, index) => (
+                        <button key={index} className="border block w-1/2 py-2 px-4 text-left rounded mb-2 hover:bg-gray-200">{keyword.toUpperCase()}</button>
+                    ))
+                }
+                <button className="bg-black rounded py-2 text-white w-1/2 mt-5">Reset Filters</button>
+            </section>
         </section>
     );
 };

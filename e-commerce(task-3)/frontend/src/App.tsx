@@ -4,7 +4,7 @@ const App = () => {
   return (
     <div className="w-full h-screen">
       <Router>
-        <div className="w-[40%]">
+        <div className="w-[20%]">
           <Sidebar />
         </div>
       </Router>
