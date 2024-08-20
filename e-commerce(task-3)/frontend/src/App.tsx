@@ -1,15 +1,20 @@
-import { BrowserRouter as Router } from "react-router-dom"
-import Sidebar from "./components/Sidebar"
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import Products from "./components/Products";
+
 const App = () => {
   return (
-    <div className="w-full h-screen">
-      <Router>
-        <div className="w-[20%]">
-          <Sidebar />
+    <Router>
+      <div className="flex min-h-screen bg-gray-100">
+        <Sidebar />
+        <div className="flex-1">
+          <Routes>
+            <Route path="/" element={<Products />} />
+          </Routes>
         </div>
-      </Router>
-    </div>
-  )
-}
+      </div>
+    </Router>
+  );
+};
 
-export default App
+export default App;

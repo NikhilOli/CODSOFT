@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { useFilter } from "./FilterContext";
+import { useFilter } from "../context/FilterContext";
 
 interface Product {
     category: string;
@@ -9,7 +9,7 @@ interface FetchResponseData {
     products: Product [];
 }
 
-const Sidebar = () => {
+const Sidebar: React.FC<any> = () => {
     const { 
         searchQuery,
         setSearchQuery,
@@ -33,7 +33,7 @@ const Sidebar = () => {
         const fetchCategories = async () => {
             try {
                 const response = await fetch('https://dummyjson.com/products')
-                const data: FetchResponseData = await response.json();
+                const data: FetchResponseData = await response.json();                
                 const uniqueCategories = Array.from(new Set(data.products.map(product => product.category)))    
                 setCategories(uniqueCategories)
                             
@@ -73,7 +73,7 @@ const Sidebar = () => {
     } 
 
     return (
-        <section className="p-6">
+        <section className="p-6 w-[20%]">
             <h1 className="text-2xl font-semibold mb-6">E-commerce Site</h1>
                 <input type="text"
                 placeholder="Search Products"
@@ -101,7 +101,7 @@ const Sidebar = () => {
                 <h4 className="text-xl font-medium mb-4">Categories</h4>
                 {
                     categories.map((category, index) => (                      
-                            <label className="block mb-2">
+                            <label key={index} className="block mb-2">
                                 <input key={index}
                                 type="radio"
                                 value={category}
