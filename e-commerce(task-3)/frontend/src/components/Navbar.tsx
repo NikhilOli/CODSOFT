@@ -1,17 +1,16 @@
 
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { useState } from "react";
-import Cart from "./Cart";
 
-const Navbar: React.FC = () => {
+interface CartProps {
+    isCartOpen: boolean;
+    toggleCart: () => void;
+}
+
+const Navbar: React.FC<CartProps> = ({ toggleCart}) => {
     const { cart } = useCart();
     const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
-    const [isCartOpen, setIsCartOpen] = useState(false)
 
-    const toogleCart = () => {
-        setIsCartOpen(!isCartOpen)
-    }
 
     return (
         <nav className="bg-gray-900 text-white p-4">
@@ -24,7 +23,7 @@ const Navbar: React.FC = () => {
                 Home
             </Link>
             <div className="relative">
-                <button onClick={toogleCart} className="hover:text-gray-300">
+                <button onClick={toggleCart} className="hover:text-gray-300">
                 Cart
                 {cartItemsCount > 0 && (
                     <span className="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">
@@ -32,7 +31,7 @@ const Navbar: React.FC = () => {
                     </span>
                 )}
                 </button>
-                {isCartOpen && <Cart />}
+                {/* {isCartOpen && <Cart isCartOpen={isCartOpen} toggleCart={toggleCart} />} */}
             </div>
             <span className="hover:text-gray-300">Welcome, User!</span>
             </div>

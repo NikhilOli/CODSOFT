@@ -6,14 +6,22 @@ import { CartContextProvider } from "./context/CartContext";
 import Navbar from "./components/Navbar";
 import Cart from "./components/Cart";
 import { Toaster } from "react-hot-toast";
+import { useState } from "react";
 
 const App = () => {
+
+  const [isCartOpen, setIsCartOpen] = useState(false)
+
+  const toggleCart = () => {
+      setIsCartOpen(!isCartOpen)
+  }
+
   return (
     <Router>
       <CartContextProvider>
         <Toaster />
-        <Navbar />
-        <Cart />
+        <Navbar isCartOpen={isCartOpen} toggleCart={toggleCart} />
+        <Cart isCartOpen={isCartOpen} toggleCart={toggleCart} />
         <div className="flex min-h-screen bg-gray-100">
           <Sidebar />
           <div className="flex-1">
