@@ -42,8 +42,6 @@ const Products = () => {
 
   const filteredProducts = useMemo(() => getFilteredProducts(), [products, selectedCategory, minPrice, maxPrice]);
 
-
-
   return (
     <section className="container mx-auto px-8 py-12">
       <h1 className="text-4xl font-bold mb-8 text-gray-800">Our Products</h1>

@@ -1,71 +1,48 @@
-import React from 'react';
+import { useState } from 'react'
+import { MdClose } from "react-icons/md";
+import { FaCartShopping, } from "react-icons/fa6";
+import { useCart } from '../context/CartContext';
+import CartItem from './CartItem';
 
-interface CartItemProps {
-  id: string;
-  title: string;
-  image: string;
-  price: number;
-  quantity: number;
-  onRemove: (id: string) => void;
-}
 
-interface CartProps {
-  items: CartItemProps[];
-  onRemove: (id: string) => void;
-}
 
-const CartItem: React.FC<CartItemProps> = ({ id, title, image, price, quantity, onRemove }) => {
-  return (
-    <div className="flex items-center justify-between bg-gray-800 text-white p-4 rounded-lg mb-4">
-      <img src={image} alt={title} className="w-16 h-16 object-cover rounded-md" />
-      <div className="flex-1 ml-4">
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="text-gray-400">Quantity: {quantity}</p>
-      </div>
-      <div className="text-lg font-bold">${(price * quantity).toFixed(2)}</div>
-      <button
-        onClick={() => onRemove(id)}
-        className="ml-4 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition-colors duration-200"
-      >
-        Remove
-      </button>
-    </div>
-  );
-};
+const Cart = () => {
 
-const Cart: React.FC<CartProps> = ({ items, onRemove }) => {
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const { cart } = useCart();
+  const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const [activeCart, setActiveCart] = useState(false);
 
   return (
-    <div className="p-4 bg-gray-900 text-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-semibold mb-4">Your Cart</h1>
-      <div className="mb-4">
-        {items.length === 0 ? (
-          <p className="text-gray-400">Your cart is empty.</p>
-        ) : (
-          items.map((item) => (
-            <CartItem
-              key={item.id}
-              id={item.id}
-              title={item.title}
-              image={item.image}
-              price={item.price}
-              quantity={item.quantity}
-              onRemove={onRemove}
-            />
-          ))
-        )}
-      </div>
-      {items.length > 0 && (
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-bold">Total: ${total.toFixed(2)}</h2>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors duration-200">
-            Checkout
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
+      <>
+          <div className={`w-full lg:w-[20vw] h-full p-5 bg-white fixed top-0 right-0 z-50 ${activeCart ? 'translate-x-0' : 'translate-x-full'} transition-all duration-500 ease-in`}>
+              <div className='flex justify-between items-center'>
+                  <h2 className='text-3xl lg:text-xl font-bold'>My Order</h2>
+                  <MdClose onClick={() => setActiveCart(!activeCart)} className='cursor-pointer border-2 rounded-md border-wood hover:bg-green hover:text-gray-200 hover:bg-gray-700 hover:border-none text-3xl lg:text-xl' />
+              </div>
 
-export default Cart;
+              {
+                cart.length > 0 ?
+                  cart.map((item) => (
+                      <CartItem key={item.id} id={item.id} title={item.title} image={item.image} price={item.price} quantity={item.quantity} />
+                  )) : 
+                  <div className='flex justify-center items-center'>
+                    <div className='text-xl font-bold text-center h-32 mt-10'>Your cart is empty.</div>
+                  </div>
+              }
+
+              <div className='absolute bottom-0'>
+                  <h1 className='font-semibold '>Items: {cart.length}</h1>
+                  <h1 className='font-semibold '>Total Amount: {totalAmount.toFixed(2)}</h1>
+                  <hr className='w-[90vw] lg:w-[18vw] my-2' />
+                  <button
+                    disabled={cart.length === 0}
+                    className='w-[90vw] lg:w-[18vw] mb-5 font-bold px-3 text-white py-2 rounded-lg bg-black'
+                  >Checkout</button>
+              </div>
+          </div>
+          <FaCartShopping onClick={() => setActiveCart(!activeCart)} className='bg-gray-300 rounded-full text-black cursor-pointer text-4xl p-2 fixed bottom-4 right-3' />
+      </>
+  )
+}
+
+export default Cart
