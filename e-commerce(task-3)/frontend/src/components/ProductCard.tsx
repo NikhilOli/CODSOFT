@@ -44,7 +44,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, title, image, price, rati
             Add to Cart
           </button>
         </div>
-      {/* </Link> */}
     </div>
   );
 };

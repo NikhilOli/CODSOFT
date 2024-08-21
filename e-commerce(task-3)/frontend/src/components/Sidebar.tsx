@@ -103,7 +103,7 @@ const Sidebar: React.FC = () => {
         <div>
           <h3 className="text-xl font-bold mb-4">Categories</h3>
           {categories.map((category, index) => (
-            <label key={index} className="block mb-2 flex items-center">
+            <label key={index} className="mb-2 flex items-center">
               <input
                 key={index}
                 type="radio"

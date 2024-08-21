@@ -38,7 +38,7 @@ const ProductPage: React.FC = () => {
     return (
         <div className="bg-gray-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
-                <Link to="/" className="bg-gray-900 hover:bg-gray-600 text-white py-2 px-4 transition duration-150 ease-in-out mb-8 inline-block">
+                <Link to="/products" className="bg-gray-900 hover:bg-gray-600 text-white py-2 px-4 transition duration-150 ease-in-out mb-8 inline-block">
                     ← Back to Products
                 </Link>
                 <div className="bg-white shadow-xl rounded-lg overflow-hidden">

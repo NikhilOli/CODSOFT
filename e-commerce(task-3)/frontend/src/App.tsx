@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Cart from "./components/Cart";
 import { Toaster } from "react-hot-toast";
 import { useState } from "react";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
 
@@ -22,15 +23,20 @@ const App = () => {
         <Toaster />
         <Navbar isCartOpen={isCartOpen} toggleCart={toggleCart} />
         <Cart isCartOpen={isCartOpen} toggleCart={toggleCart} />
-        <div className="flex min-h-screen bg-gray-100">
-          <Sidebar />
-          <div className="flex-1">
-            <Routes>
-              <Route path="/" element={<Products />} />
-              <Route path="/product/:productId" element={<ProductPage />} />
-            </Routes>
-          </div>
-        </div>
+        <Routes>
+          <Route path="/signin" element={<LoginPage />} />
+
+          <Route path="/products" element={
+            <div className="flex min-h-screen bg-gray-100">
+              <Sidebar />
+              <div className="flex-1"> 
+                <Products />
+              </div>
+            </div>
+          } />
+
+          <Route path="/product/:productId" element={<ProductPage />} />
+        </Routes>
       </CartContextProvider>
     </Router>
   );

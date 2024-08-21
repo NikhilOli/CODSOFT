@@ -2,6 +2,7 @@ import { MdClose } from "react-icons/md";
 import { FaCartShopping, } from "react-icons/fa6";
 import { useCart } from '../context/CartContext';
 import CartItem from './CartItem';
+import { useState } from "react";
 
 interface CartProps {
     isCartOpen: boolean;
@@ -13,6 +14,44 @@ const Cart: React.FC<CartProps> = ({isCartOpen, toggleCart}) => {
 
   const { cart } = useCart();
   const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const [address, setAddress] = useState('');
+
+  // Function to handle address change
+  const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setAddress(event.target.value);
+  };
+
+  // Function to handle form submission
+  const handleCheckout = async () => {
+      if (address.trim() === '') {
+          alert('Please enter your address.');
+          return;
+      }
+
+      // Replace this URL with your backend endpoint for sending address data
+      const response = await fetch('YOUR_BACKEND_API_URL', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              address,
+              cart, // You can also send the cart data if needed
+              totalAmount,
+          }),
+      });
+
+      if (response.ok) {
+          // Handle successful response
+          alert('Checkout successful!');
+          // Optionally clear the cart and address
+          // clearCart();
+          // setAddress('');
+      } else {
+          // Handle error
+          alert('Failed to send address. Please try again.');
+      }
+  };
 
   return (
       <>
@@ -33,16 +72,27 @@ const Cart: React.FC<CartProps> = ({isCartOpen, toggleCart}) => {
               }
 
               <div className='absolute bottom-0'>
-                  <h1 className='font-semibold '>Items: {cart.length}</h1>
-                  <h1 className='font-semibold '>Total Amount: {totalAmount.toFixed(2)}</h1>
+                  <h1 className='font-semibold text-xl '>Items: {cart.length}</h1>
+                  <h1 className='font-semibold text-xl'>Total Amount: <span className="">${totalAmount.toFixed(2)}</span></h1>
                   <hr className='w-[90vw] lg:w-[18vw] my-2' />
+
+                  <div className="mb-4">
+                    <input
+                        value={address}
+                        onChange={handleAddressChange}
+                        type="text"
+                        placeholder="Enter your address"
+                        className="w-full p-2 rounded-md text-black border border-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500"
+                    />
+                </div>
                   <button
                     disabled={cart.length === 0}
+                    onClick={handleCheckout}
                     className='w-[90vw] lg:w-[18vw] mb-5 font-bold px-3 text-white py-2 rounded-lg bg-black'
                   >Checkout</button>
               </div>
           </div>
-          <FaCartShopping onClick={toggleCart} className='bg-gray-300 rounded-full text-black cursor-pointer text-4xl p-2 fixed bottom-4 right-3' />
+          <FaCartShopping onClick={toggleCart} className='bg-gray-900 rounded-full text-white cursor-pointer text-4xl p-2 fixed bottom-4 right-3' />
       </>
   )
 }
