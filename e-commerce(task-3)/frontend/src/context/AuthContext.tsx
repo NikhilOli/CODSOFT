@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 interface AuthContextType {
     isAuthenticated: boolean;
-    user: any; // You can replace `any` with a specific type if you know the structure of the user object
+    user: any
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

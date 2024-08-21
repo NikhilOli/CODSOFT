@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserDetails from "../pages/UserDetails";
 
 interface CartProps {
@@ -26,11 +26,6 @@ const Navbar: React.FC<CartProps> = ({ toggleCart}) => {
         setShowUserInfo((prev) => !prev); 
     }
 
-    useEffect(() => {
-        if (user) {
-            console.log("User data updated:", user);
-        }
-    }, [user]);
     return (
         <nav className="bg-gray-900 text-white p-4">
         <div className="container mx-auto flex justify-between items-center">
