@@ -10,6 +10,7 @@ import { useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import Checkout from "./components/Checkout";
 import Orders from "./components/Orders";
+import AdminPage from "./pages/AdminPage";
 
 const App = () => {
 
@@ -26,7 +27,7 @@ const App = () => {
         <Navbar isCartOpen={isCartOpen} toggleCart={toggleCart} />
         <Cart isCartOpen={isCartOpen} toggleCart={toggleCart} />
         <Routes>
-          <Route path="/signin" element={<LoginPage />} />
+          <Route path="/" element={<LoginPage />} />
 
           <Route path="/products" element={
             <div className="flex min-h-screen bg-gray-100">
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders/*" element={<Orders />} />
+          <Route path="/admin/orders" element={<AdminPage />} />
         </Routes>
       </CartContextProvider>
     </Router>

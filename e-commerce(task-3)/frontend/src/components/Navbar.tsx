@@ -46,12 +46,18 @@ const Navbar: React.FC<CartProps> = ({ toggleCart}) => {
                     )}
                 </button>
             </div>
+            <Link to="/orders" className="hover:text-gray-300">
+                Orders
+            </Link>
+            <Link to="/admin/orders" className="hover:text-gray-300">
+                Admin
+            </Link>
             {isAuthenticated ? (
                 <button onClick={() => logout({ logoutParams: { returnTo: `${window.location.origin}/signin` } })} className="hover:text-gray-300">
                     Logout
                 </button>
             ) : (
-                <Link to="/signin" className="hover:text-gray-300">
+                <Link to="/" className="hover:text-gray-300">
                     Login
                 </Link>
             )}

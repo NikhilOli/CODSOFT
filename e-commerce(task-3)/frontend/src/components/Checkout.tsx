@@ -24,7 +24,7 @@ export interface OrderData {
 const Checkout: React.FC = () => {
     const { cart, setCart } = useCart();
     const [address, setAddress] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState<'Cash on Delivery' | 'Credit Card'>('Cash on Delivery');
+    const [paymentMethod, setPaymentMethod] = useState<'Cash on Delivery' | 'Credit Card' | "">('');
     const { user } = useAuth();
     const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
     const navigate = useNavigate()
@@ -39,7 +39,11 @@ const Checkout: React.FC = () => {
 
     const handleCheckout = async () => {
         if (address.trim() === '') {
-            alert('Please enter your address.');
+            toast.error('Please enter your address.');
+            return;
+        }
+        if (!paymentMethod) {
+            toast.error('Please select a payment method.');
             return;
         }
 
@@ -58,11 +62,12 @@ const Checkout: React.FC = () => {
         };
 
         try {
-            const response = await axios.post<OrderData>(`${import.meta.env.VITE_SERVER_URL}/admin/orders`, orderData);
+            const response = await axios.post<OrderData>(`${import.meta.env.VITE_SERVER_URL}/customer/orders/create`, orderData);
             if (response.status === 201) {
                 toast.success("Order placed successfully✅");
                 setCart([]);
                 setAddress("")
+                setPaymentMethod("")
                 navigate('/orders/pending')
             } else {
                 toast.error("Failed to place order. Please try again.");
@@ -92,7 +97,7 @@ const Checkout: React.FC = () => {
                     onChange={handlePaymentMethodChange}
                     className="w-full p-2 mt-1 rounded-md border border-gray-300 focus:outline-none"
                 >
-                    <option selected disabled>Select Payment Method</option>
+                    <option value='' disabled>Select Payment Method</option>
                     <option value="Cash on Delivery">Cash on Delivery</option>
                     <option value="Credit Card">Credit Card</option>
                 </select>

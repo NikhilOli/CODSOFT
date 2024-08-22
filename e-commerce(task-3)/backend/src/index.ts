@@ -2,7 +2,8 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import { dbConnect } from './database/dbConnect';
-import { orderRoutes } from './routes/order.Routes';
+import { customerOrderRoutes } from './routes/customer.order.Routes';
+import { adminOrderRoutes } from './routes/admin.order.routes';
 
 
 const app: Application = express();
@@ -17,11 +18,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// app.use("/", todosRoutes);
-app.use("/admin", orderRoutes);
+app.use("/admin", adminOrderRoutes);
+app.use("/customer", customerOrderRoutes);
 
 dbConnect().then(() => {
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT || 3000, () => {
         console.log(`Server listening at PORT ${process.env.PORT}`);
     });
 });
