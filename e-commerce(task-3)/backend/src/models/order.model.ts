@@ -18,7 +18,8 @@ const orderSchema = new Schema(
                     productId: { type: String, required: true },
                     name: { type: String, required: true },
                     quantity: { type: Number, required: true },
-                    price: { type: Number, required: true }
+                    price: { type: Number, required: true },
+                    image: { type: String, required:true},
                 }
             ],
             required: true
@@ -27,6 +28,10 @@ const orderSchema = new Schema(
             type: String,
             default: "Cash on delivery"
         },
+        status: {
+            type: String,
+            enum: ["Pending", "Completed"]
+        }
     }, {timestamps: true}
 );
 

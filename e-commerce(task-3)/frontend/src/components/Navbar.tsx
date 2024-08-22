@@ -28,53 +28,55 @@ const Navbar: React.FC<CartProps> = ({ toggleCart}) => {
 
     return (
         <nav className="bg-gray-900 text-white p-4">
-        <div className="container mx-auto flex justify-between items-center">
-            <Link to="/products" className="text-xl font-bold">
+    <div className="container mx-auto flex justify-between items-center">
+        <Link to="/products" className="text-xl font-bold">
             E-commerce Store
-            </Link>
-            <div className="flex items-center space-x-4">
+        </Link>
+        <div className="flex items-center space-x-4">
             <Link to="/products" className="hover:text-gray-300">
                 Home
             </Link>
             <div className="relative">
                 <button onClick={toggleCart} className="hover:text-gray-300">
-                Cart
-                {cartItemsCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    {cartItemsCount}
-                    </span>
-                )}
+                    Cart
+                    {cartItemsCount > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                            {cartItemsCount}
+                        </span>
+                    )}
                 </button>
             </div>
-            {
-                isAuthenticated ? <button onClick={() => logout({ logoutParams: { returnTo: `${window.location.origin}/signin` } })} className="hover:text-gray-300">
-                Logout
-            </button> : <Link to="/signin" className="hover:text-gray-300">
-                Login
-            </Link>
-            }
+            {isAuthenticated ? (
+                <button onClick={() => logout({ logoutParams: { returnTo: `${window.location.origin}/signin` } })} className="hover:text-gray-300">
+                    Logout
+                </button>
+            ) : (
+                <Link to="/signin" className="hover:text-gray-300">
+                    Login
+                </Link>
+            )}
             {isAuthenticated && user && (
-                <div className="relative text-black">
-                    <img
-                        src={user.picture}
-                        alt={user.name}
-                        className="w-8 h-8 rounded-full cursor-pointer"
+                <div className="relative text-slate-50	">
+                    <span
+                        className="font-semibold text-xl cursor-pointer"
                         onClick={handleUserClick}
-                    />
+                    >
+                        {user.name}
+                    </span>
                     {showUserInfo && (
-                                <div className="absolute top-10 right-0">
-                                    <UserDetails 
-                                        isUserDetailsOpen={showUserInfo}
-                                        toggleUserDetails={toggleUserDetails}
-                                        user={user} 
-                                    />
-                                </div>
-                            )}
+                        <div className="absolute top-10 right-0">
+                            <UserDetails 
+                                isUserDetailsOpen={showUserInfo}
+                                toggleUserDetails={toggleUserDetails}
+                                user={user} 
+                            />
+                        </div>
+                    )}
                 </div>
             )}
-            </div>
         </div>
-        </nav>
+    </div>
+</nav>
     );
 };
 

@@ -8,6 +8,8 @@ import Cart from "./components/Cart";
 import { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import LoginPage from "./pages/LoginPage";
+import Checkout from "./components/Checkout";
+import Orders from "./components/Orders";
 
 const App = () => {
 
@@ -36,6 +38,8 @@ const App = () => {
           } />
 
           <Route path="/product/:productId" element={<ProductPage />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/orders/*" element={<Orders />} />
         </Routes>
       </CartContextProvider>
     </Router>

@@ -48,19 +48,13 @@ const saveTodo = () => {
 
 const editTodo = (todoText, editBtn) => {
     if (editBtn.classList.contains("fa-pen-to-square")) {
-        // Create an input field
         const inputField = document.createElement("input");
         inputField.type = "text";
         inputField.value = todoText.textContent;
         inputField.className = "edit-input";
 
-        // Replace the todoText with inputField
         todoText.replaceWith(inputField);
-        
-        // Change icon to save
         editBtn.className = "edit-btn fa-solid fa-save";
-        
-        // Change the click event to save the new text
         editBtn.removeEventListener("click", () => editTodo(todoText, editBtn));
         editBtn.addEventListener("click", () => {
             if (inputField.value.trim() !== "") {
