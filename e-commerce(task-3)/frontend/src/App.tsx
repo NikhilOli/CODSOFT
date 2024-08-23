@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import Checkout from "./components/Checkout";
 import Orders from "./components/Orders";
 import AdminPage from "./pages/AdminPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
 
 const App = () => {
 
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders/*" element={<Orders />} />
+          <Route path="/admin-login" element={<AdminLoginPage />} />
           <Route path="/admin/orders" element={<AdminPage />} />
         </Routes>
       </CartContextProvider>

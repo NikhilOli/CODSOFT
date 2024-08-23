@@ -46,14 +46,11 @@ const Navbar: React.FC<CartProps> = ({ toggleCart}) => {
                     )}
                 </button>
             </div>
-            <Link to="/orders" className="hover:text-gray-300">
+            <Link to="/orders/pending" className="hover:text-gray-300">
                 Orders
             </Link>
-            <Link to="/admin/orders" className="hover:text-gray-300">
-                Admin
-            </Link>
             {isAuthenticated ? (
-                <button onClick={() => logout({ logoutParams: { returnTo: `${window.location.origin}/signin` } })} className="hover:text-gray-300">
+                <button onClick={() => logout({ logoutParams: { returnTo: `${window.location.origin}` } })} className="hover:text-gray-300">
                     Logout
                 </button>
             ) : (
@@ -64,10 +61,10 @@ const Navbar: React.FC<CartProps> = ({ toggleCart}) => {
             {isAuthenticated && user && (
                 <div className="relative text-slate-50	">
                     <span
-                        className="font-semibold text-xl cursor-pointer"
+                        className="font-semibold text-lg cursor-pointer"
                         onClick={handleUserClick}
                     >
-                        {user.name}
+                        Hi {user.name} !
                     </span>
                     {showUserInfo && (
                         <div className="absolute top-10 right-0">
