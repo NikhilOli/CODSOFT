@@ -12,6 +12,7 @@ import Checkout from "./components/Checkout";
 import Orders from "./components/Orders";
 import AdminPage from "./pages/AdminPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
 
@@ -29,7 +30,10 @@ const App = () => {
         <Cart isCartOpen={isCartOpen} toggleCart={toggleCart} />
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/admin-login" element={<AdminLoginPage />} />
+          <Route path="/admin/orders" element={<AdminPage />} />
 
+          <Route element={<ProtectedRoute />}>
           <Route path="/products" element={
             <div className="flex min-h-screen bg-gray-100">
               <Sidebar />
@@ -38,12 +42,10 @@ const App = () => {
               </div>
             </div>
           } />
-
           <Route path="/product/:productId" element={<ProductPage />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/orders/*" element={<Orders />} />
-          <Route path="/admin-login" element={<AdminLoginPage />} />
-          <Route path="/admin/orders" element={<AdminPage />} />
+          </Route>
         </Routes>
       </CartContextProvider>
     </Router>
