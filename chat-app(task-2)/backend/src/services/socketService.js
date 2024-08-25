@@ -20,9 +20,13 @@ export const handleSocketConnection = (io) => (socket) => {
       await message.save();
       console.log('Message saved to database', message);
       
+      io.to(data.recipient).emit('receive_message', message); // Emit only to the recipient
+      console.log(`Message emitted to recipient ${data.recipient}`);
+
+
       // Emit to both sender and recipient rooms
-      io.to(data.sender).to(data.recipient).emit('message', message);
-      console.log(`Message emitted to sender ${data.sender} and recipient ${data.recipient}`);
+      // io.to(data.sender).to(data.recipient).emit('message', message);
+      // console.log(`Message emitted to sender ${data.sender} and recipient ${data.recipient}`);
     } catch (error) {
       console.error('Error in sendMessage:', error);
     }

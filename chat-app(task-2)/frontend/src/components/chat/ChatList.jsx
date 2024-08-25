@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import api from '../../services/api';
+import { AuthContext } from '../../context/AuthContext';
 
 const ChatList = ({ onSelectChat, selectedChat }) => {
   const [chats, setChats] = useState([]);
+  const { user }= useContext(AuthContext)
 
   useEffect(() => {
     fetchChats();
+    console.log(user);
+    
   }, []);
 
   const fetchChats = async () => {
     try {
-      const response = await api.get('/users');
-      setChats(response.data);
+      const response = await api.get('/users', { params: { userId: user._id } });
+      const userChats = response.data
+      setChats(userChats);
     } catch (error) {
       console.error('Error fetching chats:', error);
     }

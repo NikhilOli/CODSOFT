@@ -4,4 +4,7 @@ const socket = io(import.meta.env.VITE_API_URL)
 socket.on("connect", () => {
     console.log("Client connected to server");
 })
+socket.on('disconnect', () => {
+    console.log('Disconnected from WebSocket server');
+});
 export default socket
