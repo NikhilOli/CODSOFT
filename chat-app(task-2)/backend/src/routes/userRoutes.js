@@ -1,9 +1,11 @@
 import express from 'express';
-import { getAllUsers, getProfile, getUserChats, updateProfile } from '../controllers/userController.js';
+import { getAllUsers, getProfile, getUserChats, getUserData, updateProfile } from '../controllers/userController.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const userRoutes = express.Router();
 
+
+userRoutes.get('/profile/:userId', getUserData);
 
 userRoutes.use(authenticateToken);
 userRoutes.get('/', getAllUsers)
