@@ -10,51 +10,60 @@ const ChatWindow = () => {
   const { user } = useContext(AuthContext);
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);   
+  // const [socket, setSocket] = useState(null);   
 
+
+  // useEffect(() => {
+  //   const newSocket = initializeSocket();
+  //   setSocket(newSocket);
+
+  //   newSocket.on('connect', () => {
+  //     console.log('Connected to socket server');
+  //   });
+
+  //   return () => {
+  //     newSocket.disconnect();
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   if (socket) {
+  //     const messageHandler = (message) => {
+  //       console.log('Received message:', message);
+  //       // Update state directly with the new message
+  //       setMessages((prevMessages) => [...prevMessages, message]);
+  //     };
+
+  //     socket.on('message', messageHandler);
+
+  //     return () => {
+  //       socket.off('message', messageHandler);   
+
+  //     };
+  //   }
+  // }, [socket]);
 
   useEffect(() => {
-    const newSocket = initializeSocket();
-    setSocket(newSocket);
-
-    newSocket.on('connect', () => {
-      console.log('Connected to socket server');
-    });
-
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (socket) {
-      const messageHandler = (message) => {
-        console.log('Received message:', message);
-        // Update state directly with the new message
-        setMessages((prevMessages) => [...prevMessages, message]);
-      };
-
-      socket.on('message', messageHandler);
-
-      return () => {
-        socket.off('message', messageHandler);   
-
-      };
-    }
-  }, [socket]);
-
-  useEffect(() => {
-    if (selectedChat && socket) {
-      console.log('Joining room:', selectedChat._id);
-      socket.emit('join', { room: selectedChat._id });
+    // if (selectedChat && socket) {
+    //   console.log('Joining room:', selectedChat._id);
+    //   socket.emit('join', { room: selectedChat._id });
+    // }
+    if (selectedChat) {
+      
       fetchMessages();
     }
-  }, [selectedChat, socket]);
+  }, [selectedChat] ); //[selectedChat, socket]
 
   const fetchMessages = async () => {
     try {
-      const response = await api.get(`/messages/${selectedChat._id}`);
-      setMessages(response.data);
+      const response = await api.get(`/chat/${user._id}`)
+      const userChats = response.data;
+      const chatId = userChats.length > 0 ? userChats[0]._id : null;
+    
+    if (chatId) {
+      const messagesResponse = await api.get(`/message/${chatId}`);
+      setMessages(messagesResponse.data);
+    }
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
@@ -84,16 +93,27 @@ const ChatWindow = () => {
     <div className="h-full flex">
       <ChatList onSelectChat={setSelectedChat} selectedChat={selectedChat} />
       <div className="flex-1 flex flex-col">
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {messages.map((message) => (
-            <MessageBubble
-              key={message._id}
-              message={message}
-              isOwnMessage={message.sender === user._id}
-            />
-          ))}
-        </div>
-        <MessageInput onSendMessage={sendMessage} />
+        {
+          selectedChat ? (
+            <>
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {messages.map((message) => (
+                  <MessageBubble
+                    key={message._id}
+                    message={message}
+                    isOwnMessage={message.senderId === user._id}
+                  />
+                ))}
+              </div>
+              <MessageInput onSendMessage={sendMessage} />
+            </>
+          ) :
+          (
+            <div className="flex-1 flex justify-center items-center text-gray-500">
+            Tap on a chat to start a conversation
+          </div>
+          )
+        }
       </div>
     </div>
   );
