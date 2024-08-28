@@ -1,38 +1,58 @@
-// import Message from '../models/Message.js';
+import Message from '../models/message.model.js';
 
-// export const handleSocketConnection = (io) => (socket) => {
-//   console.log('New client connected', socket.id);
+let activeUsers = [];
 
-//   socket.on('join', (data) => {
-//     socket.join(data.room);
-//     console.log(`Client ${socket.id} joined room: ${data.room}`);
-//   });
+const addUser = (userId, socketId) => {
+  if (!activeUsers.some(user => user.userId === userId)) {
+    activeUsers.push({ userId, socketId });
+  }
+};
 
-//   socket.on('sendMessage', async (data) => {
-//     try {
-//       console.log('Received sendMessage event', data);
-//       const message = new Message({
-//         sender: data.sender,
-//         recipient: data.recipient,
-//         content: data.content,
-//         groupId: data.groupId,
-//       });
-//       await message.save();
-//       console.log('Message saved to database', message);
-      
-//       io.to(data.recipient).emit('receive_message', message); // Emit only to the recipient
-//       console.log(`Message emitted to recipient ${data.recipient}`);
+const removeUser = (socketId) => {
+  activeUsers = activeUsers.filter(user => user.socketId !== socketId);
+};
 
+const getUser = (userId) => {
+  return activeUsers.find(user => user.userId === userId);
+};
 
-//       // Emit to both sender and recipient rooms
-//       // io.to(data.sender).to(data.recipient).emit('message', message);
-//       // console.log(`Message emitted to sender ${data.sender} and recipient ${data.recipient}`);
-//     } catch (error) {
-//       console.error('Error in sendMessage:', error);
-//     }
-//   });
+export const handleSocketConnection = (io) => (socket) => {
+  console.log('New client connected', socket.id);
 
-//   socket.on('disconnect', () => {
-//     console.log('Client disconnected', socket.id);
-//   });
-// };
+  socket.on('addUser', (userId) => {
+    addUser(userId, socket.id);
+    console.log(`User ${userId} connected with socket ID: ${socket.id}`);
+  });
+
+  socket.on('sendMessage', async (data) => {
+    try {
+      console.log('Received sendMessage event', data);
+      const { senderId, receiverId, text, chatId } = data;
+
+      const message = new Message({
+        chatId,
+        senderId,
+        text,
+      });
+      await message.save();
+      console.log('Message saved to database', message);
+
+      // Broadcast the message to the chat room
+      io.to(chatId).emit('receiveMessage', message);
+      console.log(`Message broadcasted to chat room ${chatId}`);
+
+    } catch (error) {
+      console.error('Error in sendMessage:', error);
+    }
+  });
+
+  socket.on('join', (data) => {
+    socket.join(data.room);
+    console.log(`Client ${socket.id} joined room: ${data.room}`);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected', socket.id);
+    removeUser(socket.id);
+  });
+};

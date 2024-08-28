@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import 'dotenv/config'
 import authRoutes from "./routes/authRoutes.js";
 // import messageRoutes from "./routes/messageRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -11,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [process.env.CLIENT_URL],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -24,7 +25,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/auth", authRoutes);
-// app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
