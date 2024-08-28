@@ -1,4 +1,3 @@
-import Message from '../models/message.model.js';
 
 let activeUsers = [];
 
@@ -25,26 +24,26 @@ export const handleSocketConnection = (io) => (socket) => {
   });
 
   socket.on('sendMessage', async (data) => {
-    try {
-      console.log('Received sendMessage event', data);
-      const { senderId, receiverId, text, chatId } = data;
+  try {
+    console.log('Received sendMessage event', data);
+    const { senderId, receiverId, text, chatId } = data;
 
-      const message = new Message({
-        chatId,
-        senderId,
-        text,
-      });
-      await message.save();
-      console.log('Message saved to database', message);
+    const message = {
+      chatId,
+      senderId,
+      text,
+      _id: data._id,  
+      createdAt: data.createdAt,  
+    };
 
-      // Broadcast the message to the chat room
-      io.to(chatId).emit('receiveMessage', message);
-      console.log(`Message broadcasted to chat room ${chatId}`);
+    // Broadcast the saved message to the chat room
+    io.to(chatId).emit('receiveMessage', message);
+    console.log(`Message broadcasted to chat room ${chatId}`);
 
-    } catch (error) {
-      console.error('Error in sendMessage:', error);
-    }
-  });
+  } catch (error) {
+    console.error('Error in sendMessage:', error);
+  }
+});
 
   socket.on('join', (data) => {
     socket.join(data.room);
