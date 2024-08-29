@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 
 const Header = () => {
-    const { user, logout } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     return (
         <header className="bg-indigo-600 text-white">
@@ -14,12 +14,12 @@ const Header = () => {
                         <Link to="/chat/profile" className="mr-4 hover:underline">
                             {user.username}
                         </Link>
-                        <button
-                            onClick={logout}
+                        <Link
+                            to="/login"
                             className="bg-indigo-500 hover:bg-indigo-400 px-3 py-1 rounded"
                         >
                             Logout
-                        </button>
+                        </Link>
                     </div>
                 ) : (
                     <div>

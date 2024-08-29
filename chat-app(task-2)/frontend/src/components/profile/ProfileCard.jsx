@@ -39,7 +39,7 @@ const ProfileCard = () => {
             <div className="text-center p-6  border-b">
                 <img
                     className="h-24 w-24 rounded-full mx-auto"
-                    src={`https://avatars.dicebear.com/api/initials/${user.username}.svg`}
+                    src={user.profilePhoto ? user.profilePhoto : `https://avatars.dicebear.com/api/initials/${user.username}.svg`}
                     alt="Profile"
                 />
                 <p className="pt-2 text-lg font-semibold">{user.username}</p>
