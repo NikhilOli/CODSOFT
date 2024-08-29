@@ -1,9 +1,8 @@
-import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
-const Layout = () => {
+const Layout = () => { 
     return (
         <div className="h-screen flex flex-col">
             <Header />

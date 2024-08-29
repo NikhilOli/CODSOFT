@@ -1,10 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import api from '../../services/api';
 import { AuthContext } from '../../context/AuthContext';
+import { useSocket } from '../../context/SocketContext';
 
-const ChatList = ({ onSelectChat, selectedChat }) => {
+const ChatList = ({ onSelectChat, selectedChat}) => {
   const [chats, setChats] = useState([]);
   const { user } = useContext(AuthContext);
+  const [onlineUsers, setOnlineUsers] = useState([]); 
+  const socket = useSocket();
+
+    useEffect(() => {
+      if (user && user._id) {
+        socket.emit('addUser', user._id);
+  
+        socket.on('onlineUsers', (users) => {
+          setOnlineUsers(users);
+        });
+  
+        return () => {
+          socket.off('onlineUsers');
+        };
+      }
+    }, [user]);
 
   useEffect(() => {
     if (user && user._id) {
@@ -49,7 +66,12 @@ const ChatList = ({ onSelectChat, selectedChat }) => {
             }`}
             onClick={() => onSelectChat(chat)}
           >
-            <div className="font-medium">{chat.otherUser?.username}</div>
+            <div className="font-medium">
+              {chat.otherUser?.username}
+              {onlineUsers.includes(chat.otherUser?._id) && (
+                <span className="text-green-500 text-sm ml-2">• Online</span>
+              )}
+            </div>
             <div className="text-sm text-gray-500">{chat.otherUser?.email}</div>
           </li>
         ))}

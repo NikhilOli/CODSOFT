@@ -1,26 +1,38 @@
 import React, { useState, useEffect, useContext, useCallback, useRef } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { useSocket } from '../../context/SocketContext';
 import ChatList from './ChatList';
 import MessageInput from './MessageInput';
 import MessageBubble from './MessageBubble';
 import api from '../../services/api';
-import { initializeSocket } from '../../services/socket';
 
 const ChatWindow = () => {
   const { user } = useContext(AuthContext);
+  const socket = useSocket();
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const newSocket = initializeSocket();
-    setSocket(newSocket);
+    if (socket) {
+      socket.on('userStatusUpdate', (data) => {
+        setOnlineUsers((prevOnlineUsers) => {
+          const { userId, online } = data;
 
-    return () => {
-      if (newSocket) newSocket.disconnect();
-    };
-  }, []);
+          if (online) {
+            return [...prevOnlineUsers, userId];
+          } else {
+            return prevOnlineUsers.filter((id) => id !== userId);
+          }
+        });
+      });
+
+      return () => {
+        socket.off('userStatusUpdate');
+      };
+    }
+  }, [socket]);
 
   useEffect(() => {
     if (socket && user) {
@@ -80,7 +92,7 @@ const ChatWindow = () => {
 
   return (
     <div className="h-full flex">
-      <ChatList onSelectChat={setSelectedChat} selectedChat={selectedChat} />
+      <ChatList onSelectChat={setSelectedChat} selectedChat={selectedChat} onlineUsers={onlineUsers} />
       <div className="flex-1 flex flex-col">
         {selectedChat ? (
           <>
