@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import api from '../services/api';
+import toast from 'react-hot-toast';
 
 export const AuthContext = createContext();
 
@@ -35,12 +36,12 @@ export const AuthProvider = ({ children }) => {
             const response = await api.post('/auth/login', { username, password });
             localStorage.setItem('token', response.data.token);
             api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-            await fetchUser(); // Fetch user data after successful login
+            await fetchUser(); 
             return true;
         } catch (error) {
             console.error('Login error:', error);
             if (error.response) {
-                alert(error.response.data.message || 'Login failed');
+                toast.error(error.response.data.message || 'Login failed');
             } else {
                 alert('Network error. Please try again.');
             }

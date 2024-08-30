@@ -7,6 +7,7 @@ import Layout from './components/layout/Layout';
 import ChatWindow from './components/chat/ChatWindow';
 import ProfileCard from './components/profile/ProfileCard';
 import Home from './pages/Home';
+import { Toaster } from 'react-hot-toast'
 import { SocketProvider } from './context/SocketContext';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
     <AuthProvider>
       <SocketProvider>
         <Router>
+          <Toaster />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
