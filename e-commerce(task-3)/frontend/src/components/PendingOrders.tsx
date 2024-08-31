@@ -14,7 +14,7 @@ interface OrderData {
     _id: string;
     name: string;
     address: string;
-    orderItems: OrderItem[];  
+    orderItems: OrderItem[];
     paymentMethod?: string;
     status?: string;
 }
@@ -26,17 +26,20 @@ interface OrderResponse {
 const PendingOrders = () => {
     const [pendingOrders, setPendingOrders] = useState<OrderData[]>([]);
     const { user } = useAuth();
-    
-    
+
     useEffect(() => {
         const fetchPendingOrders = async () => {
             try {
                 const response = await axios.get<OrderResponse>(`${import.meta.env.VITE_SERVER_URL}/customer/orders/pending`, {
                     params: { name: user.name }
-                });                
-                setPendingOrders(response.data.orders);
-            } catch (error) {
-                console.error("Error during checkout", error);
+                });
+                if (response.data.orders) {
+                    setPendingOrders(response.data.orders);
+                }
+            } catch (error: any) {
+                if (error.response && error.response.status !== 404) {
+                    console.error("Error fetching pending orders", error);
+                }
             }
         };
 
@@ -57,7 +60,7 @@ const PendingOrders = () => {
                                     order.orderItems.map((item) => (
                                         <div key={item._id} className="flex items-center space-x-4">
                                             <img
-                                                src={item.image} 
+                                                src={item.image}
                                                 alt={item.name}
                                                 className="w-16 h-16 object-cover rounded-md"
                                             />

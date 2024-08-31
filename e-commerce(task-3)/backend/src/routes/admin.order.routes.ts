@@ -1,5 +1,4 @@
 import { Router } from "express";
-import {  } from "../controllers/customer.order.controller";
 import { getAllOrders, getPendingOrders, updateOrderStatus } from "../controllers/admin.order.controller";
 
 export const adminOrderRoutes = Router();

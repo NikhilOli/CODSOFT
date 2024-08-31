@@ -2,13 +2,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-const AdminLoginPage = () => {
+interface AdminLoginPageProps {
+    setIsAdminLoggedIn: (value: boolean) => void;
+}
+
+const AdminLoginPage: React.FC<AdminLoginPageProps> = ({setIsAdminLoggedIn}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleAdminLogin = () => {
         if (username === "admin" && password === "admin123") {
+            setIsAdminLoggedIn(true);
             navigate("/admin/orders");
         } else {
             toast.error("Invalid admin credentials");

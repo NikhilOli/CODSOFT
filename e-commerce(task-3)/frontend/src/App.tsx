@@ -16,6 +16,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
 
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
   const [isCartOpen, setIsCartOpen] = useState(false)
 
   const toggleCart = () => {
@@ -26,11 +28,11 @@ const App = () => {
     <Router>
       <CartContextProvider>
         <Toaster />
-        <Navbar isCartOpen={isCartOpen} toggleCart={toggleCart} />
+        <Navbar isCartOpen={isCartOpen} toggleCart={toggleCart} isAdminLoggedIn={isAdminLoggedIn} setIsAdminLoggedIn={setIsAdminLoggedIn} />
         <Cart isCartOpen={isCartOpen} toggleCart={toggleCart} />
         <Routes>
           <Route path="/" element={<LoginPage />} />
-          <Route path="/admin-login" element={<AdminLoginPage />} />
+          <Route path="/admin-login" element={<AdminLoginPage setIsAdminLoggedIn={setIsAdminLoggedIn}/>} />
           <Route path="/admin/orders" element={<AdminPage />} />
 
           <Route element={<ProtectedRoute />}>

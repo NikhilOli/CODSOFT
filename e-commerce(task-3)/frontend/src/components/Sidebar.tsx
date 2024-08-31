@@ -1,4 +1,3 @@
-// src/components/Sidebar.tsx
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFilter } from "../context/FilterContext";
 
