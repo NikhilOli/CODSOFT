@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import 'dotenv/config'
 import authRoutes from "./routes/authRoutes.js";
-// import messageRoutes from "./routes/messageRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import chatRoutes from "./routes/chat.routes.js";
